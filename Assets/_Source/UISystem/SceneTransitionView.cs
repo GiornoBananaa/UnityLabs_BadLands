@@ -1,4 +1,4 @@
-using Core;
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +14,9 @@ namespace UISystem
             _image.DOFade(0,1);
         }
         
-        public TweenCallback TransitionFade()
+        public void TransitionFade(Action action)
         {
-            return _image.DOFade(1,1).onComplete;
+            _image.DOFade(1, 1).OnComplete(() => action?.Invoke());
         }
     }
 }

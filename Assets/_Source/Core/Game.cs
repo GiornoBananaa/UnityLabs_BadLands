@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using UISystem;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Core
@@ -15,8 +17,7 @@ namespace Core
         
         public void LoseLevel()
         {
-            TweenCallback callback = _sceneTransitionView.TransitionFade();
-            callback += RestartLevel;
+            _sceneTransitionView.TransitionFade(RestartLevel);
         }
         
         public void WinLevel()

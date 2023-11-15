@@ -1,3 +1,4 @@
+using CameraSystem;
 using InputSystem;
 using PlayerSystem;
 using UISystem;
@@ -11,6 +12,7 @@ namespace Core
         [SerializeField] private PlayerCollisionDetector _playerCollisionDetector;
         [SerializeField] private InputListener _inputListener;
         [SerializeField] private SceneTransitionView _sceneTransitionView;
+        [SerializeField] private CameraTarget _cameraTarget;
         
         private Game _game;
         private Player _player;
@@ -26,7 +28,7 @@ namespace Core
             _playerModel = new PlayerModel(5);
             _playerMovement = new PlayerMovement(_playerRigidbody,_playerModel.Speed,5);
             _playerScaling = new PlayerScaling(_playerRigidbody.transform,0.2f);
-            _player = new Player(_playerModel,_playerMovement,_playerScaling,_game);
+            _player = new Player(_playerModel,_playerMovement,_playerScaling, _cameraTarget,_game);
             _playerCollisionDetector.Construct(_player);
             //InputSystem
             _inputListener.Constructor(_player);

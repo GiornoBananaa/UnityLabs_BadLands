@@ -1,3 +1,4 @@
+using CameraSystem;
 using Core;
 using TMPro.EditorUtilities;
 using UnityEngine;
@@ -9,16 +10,18 @@ namespace PlayerSystem
         private readonly PlayerModel _model;
         private readonly PlayerMovement _playerMovement;
         private readonly PlayerScaling _playerScaling;
+        private readonly CameraTarget _cameraTarget;
         private readonly Game _game;
         
         private bool _isDead = false;
         
-        public Player(PlayerModel model, PlayerMovement playerMovement,PlayerScaling playerScaling,Game game)
+        public Player(PlayerModel model, PlayerMovement playerMovement,
+            PlayerScaling playerScaling,CameraTarget cameraTarget,Game game)
         {
-            
             _model = model;
             _playerMovement = playerMovement;
             _playerScaling = playerScaling;
+            _cameraTarget = cameraTarget;
             _game = game;
         }
             
@@ -43,6 +46,7 @@ namespace PlayerSystem
         }
         public void Jump()
         {
+            _cameraTarget.StartMove();
             if(!_isDead)
                 _playerMovement.Jump();
         }

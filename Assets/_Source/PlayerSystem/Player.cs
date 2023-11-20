@@ -31,6 +31,11 @@ namespace PlayerSystem
             _game.LoseLevel();
         }
         
+        public void StopRotation()
+        {
+            _playerMovement.StopRotationStabilizing();
+        }
+        
         public void UpSclale( )
         {
             _playerScaling.ChangeScale(true);

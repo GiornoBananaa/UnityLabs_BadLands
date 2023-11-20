@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CameraSystem
@@ -10,6 +11,11 @@ namespace CameraSystem
         [SerializeField] private float _xBoundsForSpeed;
         
         private bool _playerIsAfk;
+
+        private void Start()
+        {
+            _playerIsAfk = true;
+        }
 
         private void Update()
         {

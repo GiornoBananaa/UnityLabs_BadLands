@@ -33,6 +33,8 @@ namespace PlayerSystem
         
         private void OnCollisionEnter2D(Collision2D other)
         {
+            _player.StopRotation();
+            
             _collisionsVelocity.Add(other.relativeVelocity);
             if(_deadlySurfaceMask == (_deadlySurfaceMask  | (1<<other.gameObject.layer)) && !_isDead)
             {
@@ -49,6 +51,11 @@ namespace PlayerSystem
                 _player.DownSclale();
                 other.gameObject.SetActive(false);
             }
+        }
+
+        private void CheckPlayerPressing()
+        {
+            
         }
         
         private void OnCollisionExit2D(Collision2D other)

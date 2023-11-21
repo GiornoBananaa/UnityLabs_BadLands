@@ -7,12 +7,15 @@ namespace LevelGenerationSystem
     public class LevelGenerator : MonoBehaviour
     {
         [SerializeField] private List<GameObject> _levelParts;
+        [SerializeField] private GameObject _endPart;
         [SerializeField] private float _partsSpacing;
-        [SerializeField] private float _generatedPartsCount;
+        [SerializeField] private int _generatedPartsCount;
+        [SerializeField] private int _maxPartsCount;
 
         private Queue<GameObject> _instantinatedLevelParts;
         private Transform _cameraTransform;
         private Vector3 _lastPartPosition;
+        private int _partsCount;
 
         private void Awake()
         {
@@ -35,7 +38,7 @@ namespace LevelGenerationSystem
         {
             if(_instantinatedLevelParts.Count == 0) return;
            
-            if (_cameraTransform.position.x - _instantinatedLevelParts.Peek().transform.position.x > _partsSpacing)
+            if (_cameraTransform.position.x - _instantinatedLevelParts.Peek().transform.position.x > _partsSpacing )
             {
                 GameObject part = _instantinatedLevelParts.Dequeue();
                 part.SetActive(false);
@@ -45,6 +48,19 @@ namespace LevelGenerationSystem
        
         private void GenerateRandomPart()
         {
+            if (_partsCount == _maxPartsCount)
+            {
+                _endPart = Instantiate(_endPart,
+                    new Vector3(_lastPartPosition.x + _partsSpacing, 0, 0),
+                    Quaternion.identity);
+                _partsCount++;
+                return;
+            }
+            else if (_partsCount > _maxPartsCount)
+            {
+                return;
+            }
+
             int partIndex = 0;
             partIndex = Random.Range(0, _levelParts.Count);
 
@@ -86,6 +102,7 @@ namespace LevelGenerationSystem
                 }
                 obstacles[obstacleIndex].SetActive(false);
             }
+            _partsCount++;
         }
     }
 }

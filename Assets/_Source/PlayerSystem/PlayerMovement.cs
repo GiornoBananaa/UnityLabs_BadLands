@@ -8,23 +8,19 @@ namespace PlayerSystem
     public class PlayerMovement
     {
         private readonly Rigidbody2D _rigidbody;
-        private float _speed;
-        private float _jumpForce;
         private TweenerCore<float, float, FloatOptions> _rotationTween;
 
-        public PlayerMovement(Rigidbody2D rigidbody, float speed, float jumpForce)
+        public PlayerMovement(Rigidbody2D rigidbody)
         {
             _rigidbody = rigidbody;
-            _speed = speed;
-            _jumpForce = jumpForce;
         }
 
-        public void HorizontalMove(float x)
+        public void HorizontalMove(float x, float speed)
         {
             Vector2 force = new Vector2(x, 0);
-            _rigidbody.AddForce(force * _speed, ForceMode2D.Force);
-            if (_rigidbody.velocity.x > x * _speed)
-                _rigidbody.velocity = new Vector2(x * _speed, _rigidbody.velocity.y);
+            _rigidbody.AddForce(force * speed, ForceMode2D.Force);
+            if (_rigidbody.velocity.x > x * speed)
+                _rigidbody.velocity = new Vector2(x * speed, _rigidbody.velocity.y);
         }
 
         public void StopRotationStabilizing()
@@ -32,11 +28,11 @@ namespace PlayerSystem
             _rotationTween.Kill();
         }
         
-        public void Jump()
+        public void Jump(float jumpForce)
         {
-            _rigidbody.AddForce(Vector2.up * _jumpForce,ForceMode2D.Impulse);
-            if(_rigidbody.velocity.x > _jumpForce)
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x,_jumpForce);
+            _rigidbody.AddForce(Vector2.up * jumpForce,ForceMode2D.Impulse);
+            if(_rigidbody.velocity.x > jumpForce)
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x,jumpForce);
             
             RotationStabilizing();
         }

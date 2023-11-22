@@ -8,7 +8,7 @@ namespace InputSystem
         [SerializeField] private KeyCode _jumpKey;
         private Player _player;
         
-        public void Constructor(Player player)
+        public void Construct(Player player)
         {
             _player = player;
         }
@@ -29,7 +29,7 @@ namespace InputSystem
         {
             float x = Input.GetAxis("Horizontal");
             if(x!=0)
-                _player.MovePlayer(x);
+                _player.MoveHorizontal(x);
         }
     }
 }

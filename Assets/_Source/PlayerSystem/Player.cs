@@ -1,3 +1,4 @@
+using System;
 using CameraSystem;
 using Core;
 
@@ -8,50 +9,47 @@ namespace PlayerSystem
         private readonly PlayerModel _model;
         private readonly PlayerMovement _playerMovement;
         private readonly PlayerScaling _playerScaling;
-        private readonly CameraTarget _cameraTarget;
-        private readonly Game _game;
-        
         private bool _isDead = false;
+        private bool _isFirstMove = true;
+
+        public Action OnStartMoving;
+        public Action OnDeath;
         
         public Player(PlayerModel model, PlayerMovement playerMovement,
-            PlayerScaling playerScaling,CameraTarget cameraTarget,Game game)
+            PlayerScaling playerScaling)
         {
             _model = model;
             _playerMovement = playerMovement;
             _playerScaling = playerScaling;
-            _cameraTarget = cameraTarget;
-            _game = game;
         }
-            
+        
+        public void StopRotation() => _playerMovement.StopRotationStabilizing();
+        
+        public void UpSclale() => _playerScaling.ChangeScale(true);
+        public void DownSclale() => _playerScaling.ChangeScale(false);
+        
         public void PlayDeath( )
         {
             _isDead = true;
-            _game.LoseLevel();
+            OnDeath?.Invoke();
         }
         
-        public void StopRotation()
-        {
-            _playerMovement.StopRotationStabilizing();
-        }
-        
-        public void UpSclale( )
-        {
-            _playerScaling.ChangeScale(true);
-        }
-        public void DownSclale( )
-        {
-            _playerScaling.ChangeScale(false);
-        }
-        public void MovePlayer(float x)
+        public void MoveHorizontal(float x)
         {
             if(!_isDead)
-                _playerMovement.HorizontalMove(x);
+                _playerMovement.HorizontalMove(x,_model.Speed);
         }
+        
         public void Jump()
         {
-            _cameraTarget.StartMove();
+            if(_isFirstMove)
+            {
+                OnStartMoving?.Invoke();
+                _isFirstMove = false;
+            }
+            
             if(!_isDead)
-                _playerMovement.Jump();
+                _playerMovement.Jump(_model.JumpForce);
         }
     }
 }

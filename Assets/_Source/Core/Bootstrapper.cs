@@ -1,3 +1,4 @@
+using System;
 using CameraSystem;
 using InputSystem;
 using LevelGenerationSystem;
@@ -27,15 +28,24 @@ namespace Core
             //Core
             _game = new Game(_sceneTransitionView);
             //PlayerSystem
-            _playerModel = new PlayerModel(5);
-            _playerMovement = new PlayerMovement(_playerRigidbody,_playerModel.Speed,5);
+            _playerModel = new PlayerModel(5,5);
+            _playerMovement = new PlayerMovement(_playerRigidbody);
             _playerScaling = new PlayerScaling(_playerRigidbody.transform,0.2f);
-            _player = new Player(_playerModel,_playerMovement,_playerScaling, _cameraTarget,_game);
+            _player = new Player(_playerModel,_playerMovement,_playerScaling);
             _playerCollisionDetector.Construct(_player);
+            _player.OnDeath += _game.LoseLevel;
+            _player.OnStartMoving += _cameraTarget.StartMove;
             //InputSystem
-            _inputListener.Constructor(_player);
+            _inputListener.Construct(_player);
             //Level
-            _levelEndTrigger.Construct(_game);
+            _levelEndTrigger.OnPlayerReachEnd += _game.FinishLevel;
+        }
+
+        private void OnDestroy()
+        {
+            _player.OnDeath -= _game.LoseLevel;
+            _player.OnStartMoving -= _cameraTarget.StartMove;
+            _levelEndTrigger.OnPlayerReachEnd -= _game.FinishLevel;
         }
     }
 }

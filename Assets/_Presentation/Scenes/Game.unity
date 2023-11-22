@@ -1858,6 +1858,8 @@ MonoBehaviour:
   _endPart: {fileID: 1704794847}
   _partsSpacing: 24
   _generatedPartsCount: 2
+  _minObstaclePercentGlobally: 0.375
+  _minLevelPartsCountGlobally: 4
 --- !u!4 &2075512907
 Transform:
   m_ObjectHideFlags: 0

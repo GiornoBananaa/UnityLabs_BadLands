@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace LevelGenerationSystem
@@ -12,6 +13,8 @@ namespace LevelGenerationSystem
         [SerializeField] private Transform _endPart;
         [SerializeField] private float _partsSpacing;
         [SerializeField] private int _generatedPartsCount;
+        [SerializeField] private float _minObstaclePercentGlobally;
+        [SerializeField] private int _minLevelPartsCountGlobally;
 
         private Queue<GameObject> _instantinatedLevelParts;
         private Transform _cameraTransform;
@@ -27,12 +30,13 @@ namespace LevelGenerationSystem
             _cameraTransform = Camera.main.transform;
             _lastPartPosition = Vector3.zero;
             int level = PlayerPrefs.GetInt(LEVEL_COUNT_KEY, 1);
-            _maxPartsCount = (int)(4 + level*1.5f);
-            _minObstacleCountPercent = 0.375f + level/16f;
-            _maxObstacleCountPercent = _minObstacleCountPercent + level/16f;
+            
+            _maxPartsCount = (int)(_minLevelPartsCountGlobally + level*1.5f);
+            
+            _minObstacleCountPercent = _minObstaclePercentGlobally + level*0.1f;
+            _maxObstacleCountPercent = _minObstacleCountPercent + level*0.1f*1.5f;
             _minObstacleCountPercent = _minObstacleCountPercent > 0.8f ? 1f : _minObstacleCountPercent;
             _maxObstacleCountPercent = _maxObstacleCountPercent > 1f ? 1f : _maxObstacleCountPercent;
-            Debug.Log(_maxPartsCount+" "+_minObstacleCountPercent + " " + _maxObstacleCountPercent);
         }
        
         private void Update()
@@ -98,7 +102,8 @@ namespace LevelGenerationSystem
             _instantinatedLevelParts.Enqueue(part);
            
             List<GameObject> obstacles = part.GetComponent<LevelPart>().Obstacles;
-            int removedObstacleCount = Random.Range((int)Mathf.Lerp(0,obstacles.Count,1-_maxObstacleCountPercent),(int)Mathf.Lerp(0,obstacles.Count,1-_minObstacleCountPercent));
+            int removedObstacleCount = Random.Range((int)Mathf.Lerp(0,obstacles.Count,1-_maxObstacleCountPercent),
+                                                    (int)Mathf.Lerp(0,obstacles.Count,1-_minObstacleCountPercent));
             _lastPartPosition = part.transform.position;
            
             for (int i = 0; i < removedObstacleCount; i++)

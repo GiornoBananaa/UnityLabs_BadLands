@@ -1,3 +1,4 @@
+using System;
 using Core;
 using UnityEngine;
 using Utils;
@@ -8,18 +9,13 @@ namespace LevelGenerationSystem
     {
         [SerializeField] private LayerMask _playerLayerMask;
 
-        private Game _game;
-        
-        public void Construct(Game game)
-        {
-            _game = game;
-        }
+        public Action OnPlayerReachEnd;
         
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (LayersUtility.Contains(_playerLayerMask,other))
             {
-                _game.FinishLevel();
+                OnPlayerReachEnd?.Invoke();
             }
         }
     }

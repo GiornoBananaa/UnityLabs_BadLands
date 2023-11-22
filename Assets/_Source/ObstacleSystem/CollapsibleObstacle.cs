@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ObstacleSystem
 {
-    public class СollapsibleObstacle : MonoBehaviour
+    public class CollapsibleObstacle : MonoBehaviour
     {
         [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private CollapsiblePart[] _collapsibleParts;
@@ -19,13 +18,26 @@ namespace ObstacleSystem
                 collapsiblePart.Construct(this, _playerLayerMask);
             }
         }
-        
+
+        private void OnDisable()
+        {
+            Reset();
+        }
+
+        private void Reset()
+        {
+            for (int i = 0; i < _collapsibleParts.Length; i++)
+            {
+                _rigidbodies[i].bodyType = RigidbodyType2D.Kinematic;
+                _collapsibleParts[i].Reset();
+            }
+            _isStatic = true;
+        }
+
         public void ActivateObstacle()
         {
-            Debug.Log(_isStatic);
             if (!_isStatic) return;
             _isStatic = false;
-            Debug.Log(2);
             for (int i = 0; i < _collapsibleParts.Length; i++)
             {
                 _rigidbodies[i].bodyType = RigidbodyType2D.Dynamic;

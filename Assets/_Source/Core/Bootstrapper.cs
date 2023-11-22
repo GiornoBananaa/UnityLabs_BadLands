@@ -1,5 +1,6 @@
 using CameraSystem;
 using InputSystem;
+using LevelGenerationSystem;
 using PlayerSystem;
 using UISystem;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Core
         [SerializeField] private InputListener _inputListener;
         [SerializeField] private SceneTransitionView _sceneTransitionView;
         [SerializeField] private CameraTarget _cameraTarget;
+        [SerializeField] private LevelEndTrigger _levelEndTrigger;
         
         private Game _game;
         private Player _player;
@@ -32,6 +34,8 @@ namespace Core
             _playerCollisionDetector.Construct(_player);
             //InputSystem
             _inputListener.Constructor(_player);
+            //Level
+            _levelEndTrigger.Construct(_game);
         }
     }
 }

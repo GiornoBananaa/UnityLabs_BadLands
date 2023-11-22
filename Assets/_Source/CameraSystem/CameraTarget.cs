@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace CameraSystem
@@ -17,7 +16,7 @@ namespace CameraSystem
             _playerIsAfk = true;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if(!_playerIsAfk)
                 MoveForward();
@@ -33,7 +32,7 @@ namespace CameraSystem
             float xOffset = transform.position.x - _player.position.x;
             float percent = (_xBoundsForSpeed + xOffset)/(_xBoundsForSpeed*2);
             percent = percent > 1 ? 1 : percent;
-            percent = percent < 1 ? 0 : percent;
+            percent = percent < 0 ? 0 : percent;
             float speed = _maxSpeed-(_maxSpeed-_minSpeed)*percent;
             transform.position += Vector3.right * (speed*Time.deltaTime);
         }

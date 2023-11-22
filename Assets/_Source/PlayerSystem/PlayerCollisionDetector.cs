@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace PlayerSystem
 {
@@ -36,26 +37,21 @@ namespace PlayerSystem
             _player.StopRotation();
             
             _collisionsVelocity.Add(other.relativeVelocity);
-            if(_deadlySurfaceMask == (_deadlySurfaceMask  | (1<<other.gameObject.layer)) && !_isDead)
+            if(LayersUtility.Contains(_deadlySurfaceMask,other) && !_isDead)
             {
                 _player.PlayDeath();
                 _isDead = true;
             }
-            else if(_upScalerMask == (_upScalerMask  | (1<<other.gameObject.layer)))
+            else if(LayersUtility.Contains(_upScalerMask,other))
             {
                 _player.UpSclale();
                 other.gameObject.SetActive(false);
             }
-            else if(_downScalerMask == (_downScalerMask  | (1<<other.gameObject.layer)))
+            else if(LayersUtility.Contains(_downScalerMask,other))
             {
                 _player.DownSclale();
                 other.gameObject.SetActive(false);
             }
-        }
-
-        private void CheckPlayerPressing()
-        {
-            
         }
         
         private void OnCollisionExit2D(Collision2D other)

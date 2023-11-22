@@ -1,7 +1,5 @@
 using CameraSystem;
 using Core;
-using TMPro.EditorUtilities;
-using UnityEngine;
 
 namespace PlayerSystem
 {

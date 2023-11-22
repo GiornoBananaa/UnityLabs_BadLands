@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -24,7 +23,7 @@ namespace PlayerSystem
         {
             Vector2 force = new Vector2(x, 0);
             _rigidbody.AddForce(force * _speed, ForceMode2D.Force);
-            if (Mathf.Abs(_rigidbody.velocity.x) > _speed)
+            if (_rigidbody.velocity.x > x * _speed)
                 _rigidbody.velocity = new Vector2(x * _speed, _rigidbody.velocity.y);
         }
 
@@ -49,6 +48,7 @@ namespace PlayerSystem
             float duration = 0.3f + Mathf.Abs(angle) / 180 * 2;
             duration = 1;
             _rotationTween = _rigidbody.DORotate(0, duration);
+            _rigidbody.angularVelocity = 0;
         }
     }
 }

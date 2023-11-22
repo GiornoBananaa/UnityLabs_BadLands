@@ -1,7 +1,4 @@
-using System;
-using Cinemachine;
 using DG.Tweening;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace ObstacleSystem

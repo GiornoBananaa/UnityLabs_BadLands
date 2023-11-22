@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using Utils;
 
 namespace ObstacleSystem
 {
@@ -7,20 +7,35 @@ namespace ObstacleSystem
     public class CollapsiblePart : MonoBehaviour
     {
         private LayerMask _playerLayerMask;
+        private CollapsibleObstacle _collapsibleObstacle;
+        private Vector3 _defaultPosition;
+        private Quaternion _defaultRotation;
 
-        private СollapsibleObstacle _сollapsibleObstacle;
-        
-        public void Construct(СollapsibleObstacle collapsibleObstacle,LayerMask playerLayerMask)
+        private void Awake()
         {
-            _сollapsibleObstacle = collapsibleObstacle;
+            _defaultPosition = transform.localPosition;
+            _defaultRotation = transform.localRotation;
+        }
+
+        public void Construct(CollapsibleObstacle collapsibleObstacle,LayerMask playerLayerMask)
+        {
+            _collapsibleObstacle = collapsibleObstacle;
             _playerLayerMask = playerLayerMask;
+        }
+
+        public void Reset()
+        {
+            transform.localPosition = _defaultPosition;
+            transform.localRotation = _defaultRotation;
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (_playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer)))
+            Debug.Log(1);
+            if (LayersUtility.Contains(_playerLayerMask,other))
             {
-                _сollapsibleObstacle.ActivateObstacle();
+                Debug.Log(2);
+                _collapsibleObstacle.ActivateObstacle();
             }
         }
     }

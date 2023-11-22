@@ -1,5 +1,3 @@
-using System;
-using DG.Tweening;
 using UISystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +7,7 @@ namespace Core
     public class Game
     {
         private SceneTransitionView _sceneTransitionView;
+        private const string LEVEL_COUNT_KEY = "Level";
         
         public Game(SceneTransitionView sceneTransitionView)
         {
@@ -17,15 +16,16 @@ namespace Core
         
         public void LoseLevel()
         {
-            _sceneTransitionView.TransitionFade(RestartLevel);
+            _sceneTransitionView.TransitionFade(Restart);
         }
         
-        public void WinLevel()
+        public void FinishLevel()
         {
-            
+            PlayerPrefs.SetInt(LEVEL_COUNT_KEY, PlayerPrefs.GetInt(LEVEL_COUNT_KEY,1)+1);
+            _sceneTransitionView.TransitionFade(Restart);
         }
         
-        public void RestartLevel()
+        public void Restart()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
